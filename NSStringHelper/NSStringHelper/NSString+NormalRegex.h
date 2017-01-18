@@ -115,7 +115,30 @@
  *  @return 返回结果
  */
 + (NSString*)bankCardNumSecret:(NSString*)cardNum;
-
+/**
+ *  去除字符串中包含的空格
+ *
+ *  @param str 字符串
+ *
+ *  @return 去除空格后的字符串
+ */
+- (NSString *)removingSapceString:(NSString *)str;
+/**
+ *  根据长度计算分组的个数
+ *
+ *  @param length 长度
+ *
+ *  @return 分组的个数
+ */
+- (NSInteger)groupCountWithLength:(NSInteger)length;
+/**
+ *  给定字符串根据指定的个数进行分组，每一组用空格分隔
+ *
+ *  @param string 字符串
+ *
+ *  @return 分组后的字符串
+ */
+- (NSString *)groupedString:(NSString *)string;
 /**
  @brief 是否是银行卡
 
@@ -202,5 +225,13 @@
                  containLetter:(BOOL)containLetter
          containOtherCharacter:(NSString *)containOtherCharacter
            firstCannotBeDigtal:(BOOL)firstCannotBeDigtal;
+
+/**
+ @brief 计算字符串的字节长度
+
+ @param strtemp 需要计算的字符串
+ @return 返回的字节数
+ */
+- (int)stringConvertToInt:(NSString*)strtemp;
 
 @end

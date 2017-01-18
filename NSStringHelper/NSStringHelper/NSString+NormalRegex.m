@@ -7,6 +7,7 @@
 //
 
 #import "NSString+NormalRegex.h"
+#define kGroupSize 4
 
 @implementation NSString (NormalRegex)
 
@@ -228,6 +229,31 @@
     return cardNum;
 }
 
+- (NSString *)removingSapceString:(NSString *)str {
+    return [str stringByReplacingOccurrencesOfString:@" " withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, str.length)];
+}
+
+- (NSInteger)groupCountWithLength:(NSInteger)length {
+    return (NSInteger)ceilf((float)length /kGroupSize);
+}
+
+
+- (NSString *)groupedString:(NSString *)string {
+    NSString *str = [self removingSapceString:string];
+    NSInteger groupCount = [self groupCountWithLength:str.length];
+    NSMutableArray *components = [[NSMutableArray alloc] init];
+    for (NSInteger i = 0; i < groupCount; i++) {
+        if (i*kGroupSize + kGroupSize > str.length) {
+            [components addObject:[str substringFromIndex:i*kGroupSize]];
+        } else {
+            [components addObject:[str substringWithRange:NSMakeRange(i*kGroupSize, kGroupSize)]];
+        }
+    }
+    NSString *groupedString = [components componentsJoinedByString:@" "];
+    return groupedString;
+}
+
+
 - (BOOL)yf_bankCardluhmCheck{
     NSString * lastNum = [[self substringFromIndex:(self.length-1)] copy];//取出最后一位
     NSString * forwardNum = [[self substringToIndex:(self.length -1)] copy];//前15或18位
@@ -374,5 +400,22 @@
     NSString *regex = [NSString stringWithFormat:@"%@%@%@%@", lengthRegex, digtalRegex, letterRegex, characterRegex];
     return [self yf_isValidateByRegex:regex];
 
+}
+
+- (int)stringConvertToInt:(NSString*)strtemp
+{
+    int strlength = 0;
+    char* p = (char*)[strtemp cStringUsingEncoding:NSUnicodeStringEncoding];
+    for (int i=0 ; i<[strtemp lengthOfBytesUsingEncoding:NSUnicodeStringEncoding] ;i++)
+    {
+        if (*p) {
+            p++;
+            strlength++;
+        }
+        else {
+            p++;
+        }
+    }
+    return (strlength+1);
 }
 @end
